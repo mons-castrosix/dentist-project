@@ -2,17 +2,30 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from  'react-bootstrap/Button';
+import Header from './header/header';
 
 
 function App() {
+  
   return (
-    <div className="App">
-        
+    <div>
+       
+          <Header></Header>
 
-
-      <h1>Example heading <span className="badge badge-secondary">New</span></h1>
-<Button variant="primary">Prueba</Button>
+   
     </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
   );
 }
 
