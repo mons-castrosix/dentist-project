@@ -1,6 +1,6 @@
 
 import {
-    Badge,
+    
     Card,
     CardHeader,
     CardFooter,
@@ -8,18 +8,14 @@ import {
     DropdownItem,
     UncontrolledDropdown,
     DropdownToggle,
-    Media,
     Pagination,
     PaginationItem,
     PaginationLink,
-    Progress,
     Table,
     Container,
     Row,
-    UncontrolledTooltip,
   
   } from "reactstrap";
-  import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
   // core components
   import Header2 from "components/Headers/Header2.js";

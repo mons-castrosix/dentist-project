@@ -1,30 +1,23 @@
 
 import {
-  Badge,
   Card,
   CardHeader,
   CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
+ 
   Pagination,
   PaginationItem,
   PaginationLink,
-  Progress,
+  
   Table,
   Container,
   Row,
   
-  UncontrolledTooltip,
   
 } from "reactstrap";
-import { BrowserRouter, Route, Routes, Navigate,Link } from "react-router-dom";
 
 // core components
 import Header2 from "components/Headers/Header2.js";
-import VerPaciente from "./verPaciente";
+import { Link, NavLink } from "react-router-dom";
 
 const Tables = () => {
   return (
@@ -66,49 +59,8 @@ const Tables = () => {
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
-                      <Routes>
-                      <Route path="/admin/verpacientes" element={<VerPaciente/>} />
-                      </Routes>
-                      <Link
-            to='/admin/verpacientes'
-          >
-            gg
-          </Link>
-                      </div>
-                    </td>
-                    <td className="text-right">
-                      <UncontrolledDropdown>
-                        <DropdownToggle
-                          className="btn-icon-only text-light"
-                          href="#pablo"
-                          role="button"
-                          size="sm"
-                          color=""
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <i className="fas fa-ellipsis-v" />
-                        </DropdownToggle>
-                        <DropdownMenu className="dropdown-menu-arrow" right>
-                          <DropdownItem
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            Action
-                          </DropdownItem>
-                          <DropdownItem
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            Another action
-                          </DropdownItem>
-                          <DropdownItem
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            Something else here
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
+                      <NavLink to='/admin/ver-pacientes'>fff</NavLink>
+                    </div>
                     </td>
                   </tr>
                  
@@ -169,7 +121,6 @@ const Tables = () => {
             </Card>
           </div>
         </Row>
-        {/* Dark table */}
        
       </Container>
     </>
