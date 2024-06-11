@@ -1,11 +1,10 @@
 
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
-import VerPaciente from "views/pacientes/verPaciente";
+
 import Tables from "views/pacientes/Tables";
 import Calendario from "views/calendario";
-import classNames from "classnames";
+import Paciente from "views/pacientes/Paciente";
 var routes = [
   {
     path: "/index",
@@ -20,18 +19,16 @@ var routes = [
     icon: "ni ni-badge text-blue",
     component: <Tables />,
     layout: "/admin",
+    
   },
   {
     path: "/ver-pacientes",
-    name: "Ver Pacientes",
+    name: "Ver",
     icon: "ni ni-badge text-blue",
-    component: <VerPaciente />,
+    component: <Paciente />,
     layout: "/admin",
-    invisible:true
 
   },
- 
-
   {
     path: "/citas",
     name: "Citas",
@@ -46,7 +43,7 @@ var routes = [
     component: <Profile />,
     layout: "/admin",
   },
-
+  
 
   {/*
   {

@@ -17,7 +17,7 @@ import {
 
 // core components
 import Header2 from "components/Headers/Header2.js";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Tables = () => {
   return (
@@ -33,14 +33,13 @@ const Tables = () => {
                 <h3 className="mb-0">Pacientes</h3>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
+                <thead className="thead-light align-items-center">
                   <tr>
                     <th scope="col">Nombre</th>
                     <th scope="col">Edad</th>
                     <th scope="col">Genero</th>
                     <th scope="col">Contacto</th>
                     <th scope="col">Acciones</th>
-                    <th scope="col" />
                   </tr>
                 </thead>
                 <tbody>
@@ -59,7 +58,11 @@ const Tables = () => {
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
-                      <NavLink to='/admin/ver-pacientes'>fff</NavLink>
+                      <NavLink style={{marginRight:'15px'}} to='/admin/ver-pacientes'>Ver </NavLink>
+                      <NavLink style={{marginRight:'15px'}} to='/admin/ver-pacientes'>Editar </NavLink>
+                      <NavLink style={{marginRight:'15px'}} to='/admin/ver-pacientes'>Eliminar </NavLink>
+
+
                     </div>
                     </td>
                   </tr>
