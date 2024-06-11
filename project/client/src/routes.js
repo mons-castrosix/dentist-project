@@ -27,6 +27,7 @@ var routes = [
     icon: "ni ni-badge text-blue",
     component: <VerPaciente />,
     layout: "/admin",
+    invisible:true
 
   },
  

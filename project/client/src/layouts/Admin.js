@@ -38,6 +38,7 @@ const Admin = (props) => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
+      if(prop.invisible) return null;
       
       if (prop.layout === "/admin") {
         return (
@@ -46,6 +47,7 @@ const Admin = (props) => {
       } else {
         return null;
       }
+     
     });
   };
 
