@@ -41,7 +41,7 @@ const db = mysql.createConnection({
     });
     
     app.get('/pacientes', (req, res) => {
-        db.query("SELECT id,CONCAT(nombres,' ',apaterno,' ',amaterno),edad,genero,num_contacto FROM paciente; ", (err, result) => {
+        db.query("SELECT id,CONCAT(nombres,' ',apaterno,' ',amaterno) as nombre,edad,genero,num_contacto FROM paciente; ", (err, result) => {
           if (err) {
             console.log(err)
           }
