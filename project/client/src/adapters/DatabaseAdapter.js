@@ -5,6 +5,10 @@ const DatabaseAdapter = {
         const result = await axios.get(url, { params: query });
         return result.data;
     },
+    async find(url) {
+        const result = await axios.get(url);
+        return result.data;
+    },
     async save(url, data) {
         const result = await axios.post(url, data);
         return result.data;

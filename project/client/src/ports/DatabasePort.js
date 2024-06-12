@@ -20,26 +20,41 @@ const db = mysql.createConnection({
 
 
 
-        app.post('/add', (req, res) => {
-const nombre=req.body.name.name
-const email=req.body.name.email
-console.log(req.body.name.name);
-const sql="INSERT INTO paciente(nombres,correo_electronico) VALUES('"+nombre+"','"+email+"')";
-db.query(sql, (err, result) => {
-    if (err) {
-      console.log(err)
+    app.post('/paciente-add', (req, res) => {
+        const nombre=req.body.nombre.name
+        const email=req.body.nombre.email
+        const sql="INSERT INTO paciente(nombres,correo_electronico) VALUES('"+nombre+"','"+email+"')";
+        db.query(sql, (err, result) => {
+            if (err) {
+            console.log(err)
 
-    }
-    else {
-      console.log(result)
-      res.send(result)
+            }
+            else {
+            console.log(result)
+            res.send(result)
 
-    }
+            }
 
 
-  });
+        });
 
-    })
+    });
+    
+    app.get('/pacientes', (req, res) => {
+        db.query("SELECT id,CONCAT(nombres,' ',apaterno,' ',amaterno),edad,genero,num_contacto FROM paciente; ", (err, result) => {
+          if (err) {
+            console.log(err)
+          }
+          else {
+            console.log(result)
+
+            
+            res.send(result)
+      
+      
+          }
+        })
+      })
 
 app.listen(3001,()=>{
 console.log("escuchando en puero 3001")

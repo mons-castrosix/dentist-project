@@ -18,8 +18,25 @@ import {
 // core components
 import Header2 from "components/Headers/Header2.js";
 import { NavLink } from "react-router-dom";
+import { listarPacientes } from "domain/usecases/createPaciente";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Tables = () => {
+  const [list, setList] = useState([])
+
+  const getList = async () => {
+    
+      alert('press');
+        try {
+            const user = await listarPacientes();
+            console.log(user);
+        } catch (error) {
+            console.error(error);
+        }
+    
+}
+
   return (
     <>
       <Header2/>
@@ -32,6 +49,7 @@ const Tables = () => {
               <CardHeader className="border-0">
                 <h3 className="mb-0">Pacientes</h3>
               </CardHeader>
+
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light align-items-center">
                   <tr>
