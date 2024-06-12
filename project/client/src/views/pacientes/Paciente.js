@@ -13,10 +13,27 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
-
+import { createPaciente } from "domain/usecases/createPaciente";
 const Paciente = () => {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+
+    const handleSubmit = async () => {
+      alert('press');
+        try {
+            const user = await createPaciente({ name, email });
+            console.log(user);
+            navigate("/pacientes")
+        } catch (error) {
+            console.error(error);
+        }
+    }
   return (
     <>
       <UserHeader />
@@ -61,6 +78,8 @@ const Paciente = () => {
                           <Input
                             className="form-control-alternative"
                             id="input-nombre"
+                            value={name}
+                            onChange={e=>{setName(e.target.value)}}
                             placeholder="Nombre (s)"
                             type="text"
                           />
@@ -162,7 +181,9 @@ const Paciente = () => {
                                 id="input-correo"
                                 placeholder="Correo electrónico"
                                 type="email"
-                              />
+                                value={email}
+                                onChange={e=>{setEmail(e.target.value)}}
+                                />
                             </FormGroup>
                       </Col>
                       <Col lg="6">
@@ -263,7 +284,7 @@ const Paciente = () => {
                   <Row>
                   <Col md="4"></Col>
                     <Col md="4" >
-                      <Button color="primary">Guardar Información</Button>
+                      <Button color="primary" onClick={handleSubmit}>Guardar Información</Button>
                     </Col>
                     <Col md='4'></Col>
                   </Row>
