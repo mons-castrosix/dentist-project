@@ -1,6 +1,6 @@
 
 import {
-  Card,CardHeader,CardFooter,Pagination,PaginationItem,PaginationLink,Table,Container,Row} from "reactstrap";
+  Card,CardHeader,CardFooter,Pagination,PaginationItem,PaginationLink,Table,Container,Row,Col} from "reactstrap";
 import { ColumnGroup } from 'primereact/columngroup';
 import { DataTable } from 'primereact/datatable';
 import { Column } from "primereact/column";
@@ -8,18 +8,21 @@ import { useRef } from "react";
 import Header2 from "components/Headers/Header2.js";
 import { NavLink } from "react-router-dom";
 import { listarPacientes } from "domain/usecases/createPaciente";
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { FilterMatchMode } from 'primereact/api';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import 'primeicons/primeicons.css';
 
+import 'primereact/core/core.min.js'
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from 'primereact/button';
+import { useNavigate } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
 const Tables = () => {
   const [list, setList] = useState([])
   const [list2, setList2] = useState([])
-
+  const navigate = useNavigate();
   const dt = useRef(null);
 
   
@@ -28,17 +31,35 @@ const Tables = () => {
       try {
         const user= await listarPacientes();
             //console.log(user);
+            //var pacObj = JSON.parse(user);
+            var id = "";
+            var x=0;
+            user.forEach((item) => {x++;
+              Object.entries(item).forEach(([key, val]) => {
+                
+                  if (key == "id") {
+                      id = JSON.stringify(val);
+                      Object.assign(item,{no:x});
+                      Object.assign(item, { ver:<NavLink style={{marginRight:'5px'}} to='/admin/ver-pacientes'><i className="pi pi-eye" style={{ fontSize: '2rem' }}></i></NavLink>});
+                      Object.assign(item, { editar:<NavLink style={{marginRight:'5px'}} to='/admin/ver-pacientes'><i className="pi pi-user-edit" style={{ fontSize: '2rem' }}></i></NavLink> })
+                      Object.assign(item, { eliminar:<NavLink style={{marginRight:'5px'}} to='/admin/ver-pacientes'><i className="pi pi-user-minus" style={{ fontSize: '2rem' }}></i></NavLink>})
+
+                  }
+
+              });
+            });
+              
+
             setList(user);
-            //console.log("Lista 1"+list);
             var resultado = JSON.stringify(user);
             setList2(JSON.parse(resultado));
-            //console.log("Lista 2"+list2);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     }
 
     getList();
+    //console.log(list);
   }, [list,list2]);
   
   const [filters, setFilters] = useState({
@@ -58,31 +79,38 @@ const onGlobalFilterChange = (e) => {
 };
 const columns = [
   
-  { field: 'nombre', header: 'Nombre Completo' },
-  { field: 'tipo', header: 'Tipo de apoyo' },
-  { field: 'alcance', header: 'Alcance de apoyo' },
-  { field: 'seccion', header: 'Sección' },
+  { field: 'nombre', header: 'Nombre' },
+  { field: 'edad', header: 'Edad' },
+  { field: 'genero', header: 'Genero' },
+  { field: 'num_contacto', header: 'Contacto' },
 
 
 ];
+const ir = () => {
+  let path = '/admin/add-paciente';
+  navigate(path);
+}
 
 const headerGroup = (<ColumnGroup>
   <Row>
-      <Column header="" colSpan={4}></Column>
-      <Column  header="Acciones" style={{ paddingLeft: '125px' }} colSpan={3}></Column>
+      <Column header="" colSpan={5}></Column>
+      <Column  header="Acciones" style={{ paddingLeft: '110px' }} colSpan={3}></Column>
 
   </Row>
   <Row>
-      <Column header="Nombre Completo"></Column>
-      <Column header="Tipo de apoyo"></Column>
-      <Column header="Alcance de apoyo"></Column>
-      <Column header="Sección"></Column>
+  <Column header="N°"></Column>
+
+      <Column header="Nombre"></Column>
+      <Column header="Edad"></Column>
+      <Column header="Genero"></Column>
+      <Column header="Contacto"></Column>
       <Column header="Ver"></Column>
       <Column header="Editar"></Column>
       <Column header="Eliminar"></Column>
   </Row>
 </ColumnGroup>);
-    const exportColumns = columns.map((col) => ({ title: col.header, dataKey: col.field }));
+
+const exportColumns = columns.map((col) => ({ title: col.header, dataKey: col.field }));
 
 const exportCSV = () => {
   dt.current.exportCSV();
@@ -127,23 +155,26 @@ const header = (
 
 
       <div className='row'>
-          <div className='col-8'>
+          <div className='col-md-8 col-sm-6'>
               <div className="flex align-items-center justify-content-end gap-4">
-                  <Button type="button" id='copy' icon="pi pi-file" rounded onClick={() => exportCSV(false)} data-pr-tooltip="CSV" />
-                  <Button type="button" id='excel' icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                  <Button type="button" id='pdf' icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                  <Button  id='copy' icon="pi pi-file" raised onClick={() => exportCSV(false)} data-pr-tooltip="CSV" />
+                  <Button  id='excel' icon="pi pi-file-excel" severity="success" raised onClick={exportExcel} data-pr-tooltip="XLS" />
+                  <Button id='pdf' icon="pi pi-file-pdf" severity="warning" raised onClick={exportPdf} data-pr-tooltip="PDF" />
+                  
               </div>
           </div>
-          <div className='col-4'>
+          <div className='col-md-4 col-sm-6'>
               <span className="p-input-icon-left">
-                  <i className="pi pi-search" />
+
                   <InputText
                       value={globalFilterValue}
                       onChange={onGlobalFilterChange}
                       placeholder="Buscar"
+
                   />
               </span>
           </div>
+          
 
       </div></div>
 
@@ -158,7 +189,17 @@ const header = (
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Pacientes</h3>
+              <Row>
+                 <Col md="10" sm="6">
+                 <h3 className="mb-0">Pacientes</h3>
+
+              </Col>
+              <Col md="2" sm="6">
+              <Button type="button" id='pdf' icon="pi pi-user-plus" style={{ minWidth: '4rem',marginLeft:'70px' }} raised onClick={ir} />
+
+              </Col>
+              </Row>
+             
               </CardHeader>
               <DataTable
                                     ref={dt}
@@ -172,12 +213,16 @@ const header = (
                                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                                     currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} registros"
                                     tableStyle={{ minWidth: '50rem' }}
-                                    globalFilterFields={['nombre', 'tipo', 'alcance', 'seccion']}
+                                    globalFilterFields={['nombre', 'edad', 'genero', 'num_contacto']}
                                     header={header}>
-                                    <Column field="nombre" header="Nombre Completo" style={{ minWidth: '12rem' }} />
-                                    <Column field="tipo" header="Tipo de apoyo" style={{ minWidth: '12rem' }} />
-                                    <Column field="alcance" header="Alcance de apoyo" style={{ minWidth: '6rem' }} />
-                                    <Column field="seccion" filterField="Sección" filter header="Distrito F" style={{ minWidth: '6rem' }} />
+                                    <Column field="no" header="N°" style={{ minWidth: '2rem' }} />
+                                    <Column field="nombre" header="Nombre" style={{ minWidth: '8rem' }} />
+                                    <Column field="edad" header="Edad" style={{ minWidth: '4rem' }} />
+                                    <Column field="genero" header="Genero" style={{ minWidth: '6rem' }} />
+                                    <Column field="num_contacto" header="Teléfono" filterField="Sección" filter  style={{ minWidth: '6rem' }} />
+                                    <Column field="ver" header="Ver" style={{ minWidth: '2rem' }} />
+                                    <Column field="editar" header="Editar" style={{ minWidth: '2rem' }} />
+                                    <Column field="eliminar" header="Editar" style={{ minWidth: '2rem' }} />
 
                                    
                                 </DataTable>

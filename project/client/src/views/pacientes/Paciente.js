@@ -46,17 +46,17 @@ const Paciente = () => {
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Monserrat Alejandra Castro Sixtos</h3>
+                    <h3 className="mb-0">Nuevo Paciente</h3>
                   </Col>
                   <Col className="text-right" xs="4">
-                    <Button
+                    {/*<Button
                       color="primary"
                       href="#pablo"
                       onClick={(e) => e.preventDefault()}
                       size="sm"
                     >
                       Editar
-                    </Button>
+                    </Button>*/}
                   </Col>
                 </Row>
               </CardHeader>

@@ -22,8 +22,8 @@ var routes = [
     
   },
   {
-    path: "/ver-pacientes",
-    name: "Ver",
+    path: "/add-paciente",
+    name: "Agregar",
     icon: "ni ni-badge text-blue",
     component: <Paciente />,
     layout: "/admin",
