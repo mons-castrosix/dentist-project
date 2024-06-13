@@ -48,6 +48,7 @@
     "@fullcalendar/daygrid": "^6.1.14",
     "@fullcalendar/react": "^6.1.14",
     "@fullcalendar/timegrid": "^6.1.14",
+    "@hookform/resolvers": "^3.6.0",
     "bootstrap": "4.6.2",
     "chart.js": "2.9.4",
     "classnames": "2.3.2",
@@ -66,11 +67,13 @@
     "react-datetime": "3.2.0",
     "react-dom": "18.2.0",
     "react-event-calendar": "^0.3.0",
+    "react-hook-form": "^7.51.5",
     "react-router-dom": "6.21.1",
     "react-scripts": "5.0.1",
     "reactstrap": "8.10.0",
     "sass": "1.69.5",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.24.7",

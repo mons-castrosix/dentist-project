@@ -22,7 +22,7 @@ export const listarPacientes =async() =>{
 
 export const editarPaciente =async(id) =>{
     try{
-        const lista = await DatabaseAdapter.findOne('http://localhost:3001/edit-paciente/:id',id);
+        const lista = await DatabaseAdapter.findOne('http://localhost:3001/edit-paciente/'+id);
         return lista;
     }catch (error){
         throw new Error(error);

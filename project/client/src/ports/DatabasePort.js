@@ -18,7 +18,21 @@ const db = mysql.createConnection({
     database: 'dentista'
   })
 
+  app.get('/pacientes', (req, res) => {
+    db.query("SELECT id,CONCAT(nombres,' ',apaterno,' ',amaterno) as nombre,edad,genero,num_contacto FROM paciente; ", (err, result) => {
+      if (err) {
+        console.log(err)
+      }
+      else {
+        //console.log(result)
 
+        
+        res.send(result)
+  
+  
+      }
+    })
+  })
 
     app.post('/paciente-add', (req, res) => {
         const nombre=req.body.nombre.name
@@ -32,30 +46,25 @@ const db = mysql.createConnection({
             else {
             console.log(result)
             res.send(result)
-
             }
-
-
         });
 
     });
     
-    app.get('/pacientes', (req, res) => {
-        db.query("SELECT id,CONCAT(nombres,' ',apaterno,' ',amaterno) as nombre,edad,genero,num_contacto FROM paciente; ", (err, result) => {
-          if (err) {
-            console.log(err)
-          }
-          else {
-            //console.log(result)
+    
 
-            
-            res.send(result)
-      
-      
-          }
-        })
-      })
+    app.get('/edit-paciente/:id',(req,res)=>{
 
+        const id = req.params.id
+        const sql="SELECT * FROM paciente WHERE id="+id;
+        db.query(sql,(err,result)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.send(result[0]);
+        }
+        });
+    });
 app.listen(3001,()=>{
 console.log("escuchando en puero 3001")
 })

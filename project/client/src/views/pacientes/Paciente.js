@@ -1,25 +1,55 @@
 import {Button,Card,CardHeader,CardBody,FormGroup,Form,Input,Container,Row,Col,} from "reactstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from "react-hook-form";
+import * as Yup from 'yup';
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 import { createPaciente } from "domain/usecases/createPaciente";
 import { editarPaciente } from "domain/usecases/createPaciente";
 const Paciente = () => {
+
   const {id}= useParams();
   const isAdd= !id;
-
-
-
   const navigate = useNavigate();
+  const [user, setUser] = useState({});
 
-  const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [nombres, setNombres] = useState('');
+    const [apaterno, setApaterno] = useState('');
+    const [amaterno, setAmaterno] = useState('');
+
+    const validationSchema = Yup.object().shape({
+      nombres: Yup.string()
+          .required('Nombre (s) es obligatorio'),
+      apaterno: Yup.string()
+          .required('Apellido paterno es obligatorio'),
+      amaterno: Yup.string()
+          .required('Apellido materno es obligatorio'),
+      /*email: Yup.string()
+          .email('Email is invalid')
+          .required('Email is required'),
+      role: Yup.string()
+          .required('Role is required'),
+      password: Yup.string()
+          .transform(x => x === '' ? undefined : x)
+          .concat(isAddMode ? Yup.string().required('Password is required') : null)
+          .min(6, 'Password must be at least 6 characters'),
+      confirmPassword: Yup.string()
+          .transform(x => x === '' ? undefined : x)
+          .when('password', (password, schema) => {
+              if (password || isAddMode) return schema.required('Confirm Password is required');
+          })
+          .oneOf([Yup.ref('password')], 'Passwords must match')*/
+  });
+  const { register, handleSubmit, reset, setValue, getValues, errors, formState } = useForm({
+    resolver: yupResolver(validationSchema)
+});
   
-    const handleSubmit = async () => {
+    const handleSub= async () => {
       if(isAdd){
         try {
-                  const user = await createPaciente({ name, email });
+                  const user = await createPaciente({ nombres, apaterno,amaterno });
                   console.log(user);
                   navigate("/pacientes")
               } catch (error) {
@@ -27,17 +57,33 @@ const Paciente = () => {
               }
       }        
     }
+    function onSubmit(data) {
+      alert('click');
+      return isAdd
+          ? add(data)
+          : update(id, data);
+  }
+  function add(data){
+alert('add');
+  }
+  function update(){
+alert('edit');
+  }
 
     useEffect(() =>{
       if(!isAdd){
         async function verDatos(){
           const datos= await editarPaciente(id);
-          console.log(datos);
-
-
+          console.log(datos.nombres);
+          const fields=['nombres','amaterno','apaterno'];
+          fields.forEach(field =>setValue(field,datos[field]));
+          
         }
+        verDatos();
       }
-    })
+    },[])
+
+   
   return (
     <>
       <UserHeader />
@@ -65,7 +111,7 @@ const Paciente = () => {
                 </Row>
               </CardHeader>
               <CardBody>
-                <Form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <h6 className="heading-small text-muted mb-4">
                     Información
                   </h6>
@@ -79,13 +125,19 @@ const Paciente = () => {
                           >
                             Nombre (s)
                           </label>
-                          <Input
-                            className="form-control-alternative"
+                          <input
+                          {...register("nombres", {
+                        required: true,
+
+                      })}
+                            className="form-control"
                             id="input-nombre"
-                            value={name}
-                            onChange={e=>{setName(e.target.value)}}
+                            onChange={e=>{setNombres(e.target.value)}}
                             placeholder="Nombre (s)"
                             type="text"
+                            name="nombres"
+                            
+                            
                           />
                         </FormGroup>
                       </Col>
@@ -97,11 +149,18 @@ const Paciente = () => {
                           >
                             Apellido Paterno
                           </label>
-                          <Input
-                            className="form-control-alternative"
+                          <input
+                          {...register("apaterno", {
+                            required: true,
+
+                           })}
+                            className="form-control"
                             id="input-apaterno"
                             placeholder="Apellido paterno"
                             type="text"
+                            onChange={e=>{setApaterno(e.target.value)}}
+
+                            name="apaterno"
                           />
                         </FormGroup>
                       </Col>
@@ -115,12 +174,21 @@ const Paciente = () => {
                           >
                             Apellido Materno
                           </label>
-                          <Input
-                            className="form-control-alternative"
+                          <input
+                           {...register("amaterno", {
+                            required: true,
+
+                           })}
+                            className="form-control"
                             id="input-amaterno"
                             placeholder="Apellido Materno"
                             type="text"
+                            onChange={e=>{setApaterno(e.target.value)}}
+
+                            name="amaterno"
                           />
+                    {errors?.apaterno?.type === "required" && <span className='eform'>Campo Vacio</span>}
+
                         </FormGroup>
                       </Col>
                       <Col lg="3">
@@ -185,8 +253,7 @@ const Paciente = () => {
                                 id="input-correo"
                                 placeholder="Correo electrónico"
                                 type="email"
-                                value={email}
-                                onChange={e=>{setEmail(e.target.value)}}
+                               
                                 />
                             </FormGroup>
                       </Col>
@@ -288,12 +355,11 @@ const Paciente = () => {
                   <Row>
                   <Col md="4"></Col>
                     <Col md="4" >
-                      <Button color="primary" onClick={handleSubmit}>Guardar Información</Button>
+                      <Button type="submit" color="primary" >Guardar Información</Button>
                     </Col>
                     <Col md='4'></Col>
                   </Row>
-                </Form>
-              </CardBody>
+</form>              </CardBody>
             </Card>
           </Col>
         </Row>
