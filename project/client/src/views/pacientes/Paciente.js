@@ -1,39 +1,43 @@
-
-// reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  
-  Container,
-  Row,
-  Col,
-} from "reactstrap";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import {Button,Card,CardHeader,CardBody,FormGroup,Form,Input,Container,Row,Col,} from "reactstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 import { createPaciente } from "domain/usecases/createPaciente";
+import { editarPaciente } from "domain/usecases/createPaciente";
 const Paciente = () => {
+  const {id}= useParams();
+  const isAdd= !id;
+
+
+
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
     const [email, setEmail] = useState('');
   
     const handleSubmit = async () => {
-      alert('press');
+      if(isAdd){
         try {
-            const user = await createPaciente({ name, email });
-            console.log(user);
-            navigate("/pacientes")
-        } catch (error) {
-            console.error(error);
-        }
+                  const user = await createPaciente({ name, email });
+                  console.log(user);
+                  navigate("/pacientes")
+              } catch (error) {
+                  console.error(error);
+              }
+      }        
     }
+
+    useEffect(() =>{
+      if(!isAdd){
+        async function verDatos(){
+          const datos= await editarPaciente(id);
+          console.log(datos);
+
+
+        }
+      }
+    })
   return (
     <>
       <UserHeader />
@@ -46,7 +50,7 @@ const Paciente = () => {
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Nuevo Paciente</h3>
+                    <h3 className="mb-0">{isAdd ? 'Nuevo Paciente':'Editar Paciente'}</h3>
                   </Col>
                   <Col className="text-right" xs="4">
                     {/*<Button
@@ -296,6 +300,8 @@ const Paciente = () => {
       </Container>
     </>
   );
+
+  
 };
 
 export default Paciente;

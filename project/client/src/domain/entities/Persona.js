@@ -11,10 +11,7 @@ export class Persona {
 
 
     
-    age() {
-      const date = new Date();
-      return date.getFullYear() - this.year;
-    }
+   
   }
 
   

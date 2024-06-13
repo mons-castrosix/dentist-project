@@ -22,6 +22,14 @@ var routes = [
     
   },
   {
+    path: "/edit-paciente/:id",
+    name: "Agregar",
+    icon: "ni ni-badge text-blue",
+    component: <Paciente />,
+    layout: "/admin",
+
+  },
+  {
     path: "/add-paciente",
     name: "Agregar",
     icon: "ni ni-badge text-blue",

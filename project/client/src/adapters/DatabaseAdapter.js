@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const DatabaseAdapter = {
-    async findOne(url, query) {
-        const result = await axios.get(url, { params: query });
+    async findOne(url, id) {
+        const result = await axios.get(url, { params: id });
         return result.data;
     },
     async find(url) {

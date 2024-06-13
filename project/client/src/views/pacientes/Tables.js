@@ -41,7 +41,7 @@ const Tables = () => {
                       id = JSON.stringify(val);
                       Object.assign(item,{no:x});
                       Object.assign(item, { ver:<NavLink style={{marginRight:'5px'}} to='/admin/ver-pacientes'><i className="pi pi-eye" style={{ fontSize: '2rem' }}></i></NavLink>});
-                      Object.assign(item, { editar:<NavLink style={{marginRight:'5px'}} to='/admin/ver-pacientes'><i className="pi pi-user-edit" style={{ fontSize: '2rem' }}></i></NavLink> })
+                      Object.assign(item, { editar:<NavLink style={{marginRight:'5px'}} to={'/admin/edit-paciente/'+id}><i className="pi pi-user-edit" style={{ fontSize: '2rem' }}></i></NavLink> })
                       Object.assign(item, { eliminar:<NavLink style={{marginRight:'5px'}} to='/admin/ver-pacientes'><i className="pi pi-user-minus" style={{ fontSize: '2rem' }}></i></NavLink>})
 
                   }
