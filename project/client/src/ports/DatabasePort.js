@@ -19,7 +19,7 @@ const db = mysql.createConnection({
   })
 
   app.get('/pacientes', (req, res) => {
-    db.query("SELECT id,CONCAT(nombres,' ',apaterno,' ',amaterno) as nombre,edad,genero,num_contacto FROM paciente; ", (err, result) => {
+    db.query("SELECT id,CONCAT(nombres,' ',apaterno,' ',amaterno) as nombre,edad,genero,telefono FROM paciente; ", (err, result) => {
       if (err) {
         console.log(err)
       }
@@ -35,9 +35,17 @@ const db = mysql.createConnection({
   })
 
     app.post('/paciente-add', (req, res) => {
-        const nombre=req.body.nombre.name
-        const email=req.body.nombre.email
-        const sql="INSERT INTO paciente(nombres,correo_electronico) VALUES('"+nombre+"','"+email+"')";
+        console.log(req.body);
+        const nombre=req.body.nombres
+        const apaterno=req.body.apaterno
+        const amaterno= req.body.amaterno
+        const genero=req.body.genero
+        const telefono=req.body.telefono
+
+        const edad=req.body.edad
+        const email=req.body.email
+        const sql="INSERT INTO paciente VALUES("+null+",'"+nombre+"','"+apaterno+"','"+amaterno+"',"+ edad+",'"+genero+"','"+ telefono+"','"+email+"')";
+        console.log(sql);
         db.query(sql, (err, result) => {
             if (err) {
             console.log(err)

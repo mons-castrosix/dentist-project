@@ -82,7 +82,7 @@ const columns = [
   { field: 'nombre', header: 'Nombre' },
   { field: 'edad', header: 'Edad' },
   { field: 'genero', header: 'Genero' },
-  { field: 'num_contacto', header: 'Contacto' },
+  { field: 'telefono', header: 'Contacto' },
 
 
 ];
@@ -213,13 +213,13 @@ const header = (
                                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                                     currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} registros"
                                     tableStyle={{ minWidth: '50rem' }}
-                                    globalFilterFields={['nombre', 'edad', 'genero', 'num_contacto']}
+                                    globalFilterFields={['nombre', 'edad', 'genero', 'telefono']}
                                     header={header}>
                                     <Column field="no" header="N°" style={{ minWidth: '2rem' }} />
                                     <Column field="nombre" header="Nombre" style={{ minWidth: '8rem' }} />
                                     <Column field="edad" header="Edad" style={{ minWidth: '4rem' }} />
                                     <Column field="genero" header="Genero" style={{ minWidth: '6rem' }} />
-                                    <Column field="num_contacto" header="Teléfono" filterField="Sección" filter  style={{ minWidth: '6rem' }} />
+                                    <Column field="telefono" header="Teléfono" filterField="Sección" filter  style={{ minWidth: '6rem' }} />
                                     <Column field="ver" header="Ver" style={{ minWidth: '2rem' }} />
                                     <Column field="editar" header="Editar" style={{ minWidth: '2rem' }} />
                                     <Column field="eliminar" header="Editar" style={{ minWidth: '2rem' }} />

@@ -26,6 +26,12 @@ const Paciente = () => {
           .required('Apellido paterno es obligatorio'),
       amaterno: Yup.string()
           .required('Apellido materno es obligatorio'),
+      edad: Yup.string().required("Edad es obligatoria").matches(/^(0|[1-9]\d*)(\.\d+)?$/,"Ingresa solo numeros"),
+      genero: Yup.string().required('Genero es obligatorio'),
+      email: Yup.string()
+      .required('Correo electrónico es obligatorio'),
+      telefono: Yup.string()
+      .required('Telefono es obligatorio')
       /*email: Yup.string()
           .email('Email is invalid')
           .required('Email is required'),
@@ -42,7 +48,7 @@ const Paciente = () => {
           })
           .oneOf([Yup.ref('password')], 'Passwords must match')*/
   });
-  const { register, handleSubmit, reset, setValue, getValues, errors, formState } = useForm({
+  const { register, handleSubmit, reset, setValue, getValues,formState: { errors } } = useForm({
     resolver: yupResolver(validationSchema)
 });
   
@@ -63,9 +69,18 @@ const Paciente = () => {
           ? add(data)
           : update(id, data);
   }
-  function add(data){
-alert('add');
+  async function add(data){
+    try {
+      const user = await createPaciente(data);
+      console.log(user);
+      navigate("/admin/pacientes")
+    } catch (error) {
+        console.error(error);
+    }
   }
+
+
+
   function update(){
 alert('edit');
   }
@@ -75,7 +90,7 @@ alert('edit');
         async function verDatos(){
           const datos= await editarPaciente(id);
           console.log(datos.nombres);
-          const fields=['nombres','amaterno','apaterno'];
+          const fields=['nombres','amaterno','apaterno','edad','genero','telefono','email'];
           fields.forEach(field =>setValue(field,datos[field]));
           
         }
@@ -139,6 +154,8 @@ alert('edit');
                             
                             
                           />
+                          {errors.nombres?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.nombres?.message}</span>}
+
                         </FormGroup>
                       </Col>
                       <Col lg="6">
@@ -162,6 +179,8 @@ alert('edit');
 
                             name="apaterno"
                           />
+                          {errors.apaterno?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.apaterno?.message}</span>}
+
                         </FormGroup>
                       </Col>
                     </Row>
@@ -187,24 +206,25 @@ alert('edit');
 
                             name="amaterno"
                           />
-                    {errors?.apaterno?.type === "required" && <span className='eform'>Campo Vacio</span>}
+                       {errors.amaterno?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.amaterno?.message}</span>}
 
                         </FormGroup>
                       </Col>
                       <Col lg="3">
                         <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-edad"
-                          >
-                            Edad
-                          </label>
-                          <Input
-                            className="form-control-alternative"
+                          <label className="form-control-label" htmlFor="input-edad">Edad</label>
+                          <input
+                          {...register("edad", {
+                            required: true,
+                           })}
+                            className="form-control"
                             id="input-edad"
                             placeholder="Edad"
-                            type="number"
+                            type="text"
+                            name="edad"
                           />
+                         {errors.edad?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.edad?.message}</span>}
+                         {errors?.edad?.type === "matches" && <span className='eform'><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i>{errors.edad?.message}</span> }
                         </FormGroup>
                       </Col>
                       <Col lg="3">
@@ -215,19 +235,21 @@ alert('edit');
                           >
                             Genero
                           </label>
-                          <Input
-                            className="form-control-alternative"
+                          <select
+                          {...register("genero", {
+                            required: true,
+                           })}
+                            className="form-control"
                             id="input-edad"
-                            placeholder="Edad"
+                            placeholder="Genero"
+                            name="genero"
                             type="select"
                           >
-                            <option val="">Selecciona</option>
-                            <option val="F">Femenino</option>
-                            <option val="M">Masculino</option>
-
-
-
-                          </Input>                        
+                            <option value="">Selecciona</option>
+                            <option value="F">Femenino</option>
+                            <option value="M">Masculino</option>
+                          </select>                        
+                          {errors.genero?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.genero?.message}</span>}
 
                         </FormGroup>
                       </Col>
@@ -248,35 +270,43 @@ alert('edit');
                               >
                                 Correo Electrónico
                               </label>
-                              <Input
-                                className="form-control-alternative"
+                              <input
+                              {...register("email", {
+                            required: true
+                           })}
+                                className="form-control"
                                 id="input-correo"
                                 placeholder="Correo electrónico"
                                 type="email"
+                                name="email"
                                
                                 />
+                                {errors.email?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.email?.message}</span>}
+
                             </FormGroup>
                       </Col>
                       <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-telefono"
-                          >
-                            Teléfono de Contacto
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            id="input-telefono"
-                            placeholder="Edad"
-                            type="text"
-                          >
-                            <option val="">Selecciona</option>
-                            <option val="F">Femenino</option>
-                            <option val="M">Masculino</option>
-                          </Input>                        
+                      <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="input-correo"
+                              >
+                                Número de telefono
+                              </label>
+                              <input
+                              {...register("telefono", {
+                            required: true
+                           })}
+                                className="form-control"
+                                id="input-correo"
+                                placeholder="Correo electrónico"
+                                type="text"
+                                name="telefono"
+                               
+                                />
+                              {errors.telefono?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.telefono?.message}</span>}
 
-                        </FormGroup>
+                            </FormGroup>
                       </Col>
                   </Row>
                     {/*<Row>
