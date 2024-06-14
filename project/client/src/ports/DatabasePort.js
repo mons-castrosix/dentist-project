@@ -18,23 +18,23 @@ const db = mysql.createConnection({
     database: 'dentista'
   })
 
-  app.get('/pacientes', (req, res) => {
-    db.query("SELECT id,CONCAT(nombres,' ',apaterno,' ',amaterno) as nombre,edad,genero,telefono FROM paciente; ", (err, result) => {
-      if (err) {
-        console.log(err)
-      }
-      else {
-        //console.log(result)
+    app.get('/pacientes', (req, res) => {
+        db.query("SELECT id,CONCAT(nombres,' ',apaterno,' ',amaterno) as nombre,edad,genero,telefono FROM paciente; ", (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        else {
+            //console.log(result)
 
-        
-        res.send(result)
-  
-  
-      }
+            
+            res.send(result)
+    
+    
+        }
+        })
     })
-  })
 
-    app.post('/paciente-add', (req, res) => {
+    app.post('/add-paciente', (req, res) => {
         console.log(req.body);
         const nombre=req.body.nombres
         const apaterno=req.body.apaterno
@@ -59,9 +59,7 @@ const db = mysql.createConnection({
 
     });
     
-    
-
-    app.get('/edit-paciente/:id',(req,res)=>{
+    app.get('/view-paciente/:id',(req,res)=>{
 
         const id = req.params.id
         const sql="SELECT * FROM paciente WHERE id="+id;
@@ -73,6 +71,50 @@ const db = mysql.createConnection({
         }
         });
     });
+
+    app.patch('/edit-paciente/:id',(req,res)=>{
+
+        console.log(req.params);
+        const id=req.params.id
+        const nombre=req.body.nombres
+        const apaterno=req.body.apaterno
+        const amaterno= req.body.amaterno
+        const genero=req.body.genero
+        const telefono=req.body.telefono
+
+        const edad=req.body.edad
+        const email=req.body.email
+        const sql="UPDATE paciente SET nombres=?, apaterno=?,amaterno=?,edad=?,genero=?,telefono=?,email=? WHERE id=?";
+        console.log(sql);
+        db.query(sql,[nombre,apaterno,amaterno,edad,genero,telefono,email,id ], (err, result) => {
+            if (err) {
+            console.log(err)
+
+            }
+            else {
+            console.log(result)
+            res.send(result)
+            }
+        });
+    });
+
+    app.delete('/delete-paciente/:id', (req, res) => {
+        const id = req.params.id
+
+        db.query("DELETE FROM paciente WHERE id=?; ",[id], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        else {
+            //console.log(result)
+
+            
+            res.send(result)
+    
+    
+        }
+        })
+    })
 app.listen(3001,()=>{
 console.log("escuchando en puero 3001")
 })

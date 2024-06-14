@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 import { createPaciente } from "domain/usecases/createPaciente";
-import { editarPaciente } from "domain/usecases/createPaciente";
+import { verPaciente,editarPaciente } from "domain/usecases/createPaciente";
 const Paciente = () => {
 
   const {id}= useParams();
@@ -52,17 +52,7 @@ const Paciente = () => {
     resolver: yupResolver(validationSchema)
 });
   
-    const handleSub= async () => {
-      if(isAdd){
-        try {
-                  const user = await createPaciente({ nombres, apaterno,amaterno });
-                  console.log(user);
-                  navigate("/pacientes")
-              } catch (error) {
-                  console.error(error);
-              }
-      }        
-    }
+    
     function onSubmit(data) {
       alert('click');
       return isAdd
@@ -72,7 +62,6 @@ const Paciente = () => {
   async function add(data){
     try {
       const user = await createPaciente(data);
-      console.log(user);
       navigate("/admin/pacientes")
     } catch (error) {
         console.error(error);
@@ -81,14 +70,21 @@ const Paciente = () => {
 
 
 
-  function update(){
-alert('edit');
+  async function update(id,data){
+      alert('edit');
+      try {
+        const user = await editarPaciente(id,data);
+        console.log(user);
+        navigate("/admin/pacientes")
+      } catch (error) {
+          console.error(error);
+      }
   }
 
     useEffect(() =>{
       if(!isAdd){
         async function verDatos(){
-          const datos= await editarPaciente(id);
+          const datos= await verPaciente(id);
           console.log(datos.nombres);
           const fields=['nombres','amaterno','apaterno','edad','genero','telefono','email'];
           fields.forEach(field =>setValue(field,datos[field]));

@@ -1,7 +1,7 @@
 
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
-
+import VerPaciente from "views/pacientes/verPaciente";
 import Tables from "views/pacientes/Tables";
 import Calendario from "views/calendario";
 import Paciente from "views/pacientes/Paciente";
@@ -29,6 +29,15 @@ var routes = [
     layout: "/admin",
 
   },
+  {
+    path: "/view-paciente/:id",
+    name: "Ver",
+    icon: "ni ni-badge text-blue",
+    component: <VerPaciente />,
+    layout: "/admin",
+
+  },
+  
   {
     path: "/add-paciente",
     name: "Agregar",

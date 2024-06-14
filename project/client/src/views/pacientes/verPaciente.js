@@ -1,166 +1,360 @@
-
-import {
-    
-    Card,
-    CardHeader,
-    CardFooter,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown,
-    DropdownToggle,
-    Pagination,
-    PaginationItem,
-    PaginationLink,
-    Table,
-    Container,
-    Row,
-  
-  } from "reactstrap";
-
+import {Button,Card,CardHeader,CardBody,FormGroup,Form,Input,Container,Row,Col,} from "reactstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from "react-hook-form";
+import * as Yup from 'yup';
+// core components
+import UserHeader from "components/Headers/UserHeader.js";
+import { createPaciente } from "domain/usecases/createPaciente";
+import { verPaciente,editarPaciente } from "domain/usecases/createPaciente";
   // core components
   import Header2 from "components/Headers/Header2.js";
   
   const VerPaciente = () => {
-    return (
-      <>
-        <Header2/>
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-          {/* Table */}
-          <Row>
-            <div className="col">
-              <Card className="shadow">
-                <CardHeader className="border-0">
-                  <h3 className="mb-0">Ver Pacientes</h3>
-                </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Nombre</th>
-                      <th scope="col">Edad</th>
-                      <th scope="col">Genero</th>
-                      <th scope="col">Contacto</th>
-                      <th scope="col">Acciones</th>
-                      <th scope="col" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Monserrat Alejandra Castro</td>
-                      <td>25 años</td>
-                      <td>
-                       
-                          Femenino
-                      </td>
-                      <td>
-                        <div className="avatar-group">
-                          
-                          443555831
-                        </div>
-                      </td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                        </div>
-                      </td>
-                      <td className="text-right">
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            className="btn-icon-only text-light"
-                            href="#pablo"
-                            role="button"
-                            size="sm"
-                            color=""
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            <i className="fas fa-ellipsis-v" />
-                          </DropdownToggle>
-                          <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem
-                              href="#pablo"
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              Action
-                            </DropdownItem>
-                            <DropdownItem
-                              href="#pablo"
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              Another action
-                            </DropdownItem>
-                            <DropdownItem
-                              href="#pablo"
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              Something else here
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </td>
-                    </tr>
-                   
-                  </tbody>
-                </Table>
-                <CardFooter className="py-4">
-                  <nav aria-label="...">
-                    <Pagination
-                      className="pagination justify-content-end mb-0"
-                      listClassName="justify-content-end mb-0"
+    const {id}= useParams();
+    const isAdd= !id;
+    const navigate = useNavigate();
+
+    const ir = () => {
+      let path = '/admin/pacientes';
+      navigate(path);
+    }
+
+    
+  const { register, handleSubmit, reset, setValue, getValues,formState: { errors } } = useForm({
+});
+  
+    
+    
+
+
+  
+
+    useEffect(() =>{
+      
+        async function verDatos(){
+          const datos= await verPaciente(id);
+          console.log(datos.nombres);
+          const fields=['nombres','amaterno','apaterno','edad','genero','telefono','email'];
+          fields.forEach(field =>setValue(field,datos[field]));
+          
+        }
+        verDatos();
+      
+    },[])
+
+   
+  return (
+    <>
+      <UserHeader />
+      {/* Page content */}
+      <Container className="mt--7" fluid>
+        <Row>
+          <Col className="order-xl-1" xl="1"></Col>
+          <Col className="order-xl-1" xl="9">
+            <Card className="bg-secondary shadow">
+              <CardHeader className="bg-white border-0">
+                <Row className="align-items-center">
+                  <Col xs="8">
+                    <h3 className="mb-0">Datos del paciente</h3>
+                  </Col>
+                  <Col className="text-right" xs="4">
+                    {/*<Button
+                      color="primary"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                      size="sm"
                     >
-                      <PaginationItem className="disabled">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                          tabIndex="-1"
-                        >
-                          <i className="fas fa-angle-left" />
-                          <span className="sr-only">Previous</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          2 <span className="sr-only">(current)</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          3
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <i className="fas fa-angle-right" />
-                          <span className="sr-only">Next</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                    </Pagination>
-                  </nav>
-                </CardFooter>
-              </Card>
-            </div>
-          </Row>
-          {/* Dark table */}
-         
-        </Container>
-      </>
-    );
-  };
+                      Editar
+                    </Button>*/}
+                  </Col>
+                </Row>
+              </CardHeader>
+              <CardBody>
+                <form>
+                  <h6 className="heading-small text-muted mb-4">
+                    Información
+                  </h6>
+                  <div className="pl-lg-4">
+                    <Row>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-username"
+                          >
+                            Nombre (s)
+                          </label>
+                          <input
+                          {...register("nombres", {
+                        required: true,
+
+                      })}
+                      readOnly
+                            className="form-control"
+                            id="input-nombre"
+                            placeholder="Nombre (s)"
+                            type="text"
+                            name="nombres"
+                            
+                            
+                          />
+                          {errors.nombres?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.nombres?.message}</span>}
+
+                        </FormGroup>
+                      </Col>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-email"
+                          >
+                            Apellido Paterno
+                          </label>
+                          <input
+                          {...register("apaterno", {
+                            required: true,
+
+                           })}
+                           readOnly
+
+                            className="form-control"
+                            id="input-apaterno"
+                            placeholder="Apellido paterno"
+                            type="text"
+
+                            name="apaterno"
+                          />
+                          {errors.apaterno?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.apaterno?.message}</span>}
+
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-first-name"
+                          >
+                            Apellido Materno
+                          </label>
+                          <input
+                           {...register("amaterno", {
+                            required: true,
+
+                           })}
+                           readOnly
+
+                            className="form-control"
+                            id="input-amaterno"
+                            placeholder="Apellido Materno"
+                            type="text"
+
+                            name="amaterno"
+                          />
+                       {errors.amaterno?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.amaterno?.message}</span>}
+
+                        </FormGroup>
+                      </Col>
+                      <Col lg="3">
+                        <FormGroup>
+                          <label className="form-control-label" htmlFor="input-edad">Edad</label>
+                          <input
+                          {...register("edad", {
+                            required: true,
+                           })}
+                            className="form-control"
+                            id="input-edad"
+                            placeholder="Edad"
+                            type="text"
+                            name="edad"
+                            readOnly
+
+                          />
+                         {errors.edad?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.edad?.message}</span>}
+                         {errors?.edad?.type === "matches" && <span className='eform'><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i>{errors.edad?.message}</span> }
+                        </FormGroup>
+                      </Col>
+                      <Col lg="3">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-edad"
+                          >
+                            Genero
+                          </label>
+                          <select
+                          {...register("genero", {
+                            required: true,
+                           })}
+                            className="form-control"
+                            id="input-edad"
+                            placeholder="Genero"
+                            name="genero"
+                            readOnly
+
+                            type="select"
+                          >
+                            <option value="">Selecciona</option>
+                            <option value="F">Femenino</option>
+                            <option value="M">Masculino</option>
+                          </select>                        
+                          {errors.genero?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.genero?.message}</span>}
+
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                  </div>
+                  <hr className="my-4" />
+                  {/* Address */}
+                  <h6 className="heading-small text-muted mb-4">
+                    Información de Contacto                  
+                  </h6>
+                  <div className="pl-lg-4">
+                  <Row>
+                      <Col lg="6">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="input-correo"
+                              >
+                                Correo Electrónico
+                              </label>
+                              <input
+                              {...register("email", {
+                            required: true
+                           })}
+                           readOnly
+
+                                className="form-control"
+                                id="input-correo"
+                                placeholder="Correo electrónico"
+                                type="email"
+                                name="email"
+                               
+                                />
+                                {errors.email?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.email?.message}</span>}
+
+                            </FormGroup>
+                      </Col>
+                      <Col lg="6">
+                      <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="input-correo"
+                              >
+                                Número de telefono
+                              </label>
+                              <input
+                              {...register("telefono", {
+                            required: true
+                           })}
+                                className="form-control"
+                                id="input-correo"
+                                placeholder="Correo electrónico"
+                                type="text"
+                                readOnly
+
+                                name="telefono"
+                               
+                                />
+                              {errors.telefono?.type=="required" && <span><i className="pi pi-exclamation-circle" style={{ color: 'red' }}></i> {errors.telefono?.message}</span>}
+
+                            </FormGroup>
+                      </Col>
+                  </Row>
+                    {/*<Row>
+                      <Col md="12">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-address"
+                          >
+                            Address
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                            id="input-address"
+                            placeholder="Home Address"
+                            type="text"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-city"
+                          >
+                            City
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                            defaultValue="New York"
+                            id="input-city"
+                            placeholder="City"
+                            type="text"
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-country"
+                          >
+                            Country
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                            defaultValue="United States"
+                            id="input-country"
+                            placeholder="Country"
+                            type="text"
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-country"
+                          >
+                            Postal code
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                            id="input-postal-code"
+                            placeholder="Postal code"
+                            type="number"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>*/}
+                  </div>
+                  {/* Description */}
+                  <Row>
+                  <Col md="5"></Col>
+                    <Col md="3" >
+                      <Button type="submit" color="primary" onClick={ir}>Atrás</Button>
+                    </Col>
+                    <Col md='4'></Col>
+                  </Row>
+</form>              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </>
+  );
+
+  
+  }
   
   export default VerPaciente;
   

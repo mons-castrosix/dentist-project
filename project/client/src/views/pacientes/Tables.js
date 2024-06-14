@@ -5,6 +5,7 @@ import { ColumnGroup } from 'primereact/columngroup';
 import { DataTable } from 'primereact/datatable';
 import { Column } from "primereact/column";
 import { useRef } from "react";
+import Swal from "sweetalert2";
 import Header2 from "components/Headers/Header2.js";
 import { NavLink } from "react-router-dom";
 import { listarPacientes } from "domain/usecases/createPaciente";
@@ -12,7 +13,7 @@ import { FilterMatchMode } from 'primereact/api';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import 'primeicons/primeicons.css';
-
+import { eliminarPaciente } from "domain/usecases/createPaciente";
 import 'primereact/core/core.min.js'
 import { useState } from "react";
 import { useEffect } from "react";
@@ -24,6 +25,32 @@ const Tables = () => {
   const [list2, setList2] = useState([])
   const navigate = useNavigate();
   const dt = useRef(null);
+
+
+
+  const deletePaciente = (id) => {
+    Swal.fire({
+        title: '¿Estás seguro de eliminar este paciente?',
+        text: 'No se podrán revertir los cambios',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'De acuerdo',
+        cancelButtonText:'Cancelar',
+        
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const user = await eliminarPaciente(id);
+            navigate("/admin/pacientes")
+          } catch (error) {
+              console.error(error);
+          }
+            
+        }
+        });
+        }
+  
+    
 
   
   useEffect(() => {
@@ -40,9 +67,9 @@ const Tables = () => {
                   if (key == "id") {
                       id = JSON.stringify(val);
                       Object.assign(item,{no:x});
-                      Object.assign(item, { ver:<NavLink style={{marginRight:'5px'}} to='/admin/ver-pacientes'><i className="pi pi-eye" style={{ fontSize: '2rem' }}></i></NavLink>});
+                      Object.assign(item, { ver:<NavLink style={{marginRight:'5px'}} to={'/admin/view-paciente/'+id}><i className="pi pi-eye" style={{ fontSize: '2rem' }}></i></NavLink>});
                       Object.assign(item, { editar:<NavLink style={{marginRight:'5px'}} to={'/admin/edit-paciente/'+id}><i className="pi pi-user-edit" style={{ fontSize: '2rem' }}></i></NavLink> })
-                      Object.assign(item, { eliminar:<NavLink style={{marginRight:'5px'}} to='/admin/ver-pacientes'><i className="pi pi-user-minus" style={{ fontSize: '2rem' }}></i></NavLink>})
+                      Object.assign(item, { eliminar:<NavLink style={{marginRight:'5px'}} onClick={() => { deletePaciente(val) }}><i className="pi pi-user-minus" style={{ fontSize: '2rem' }}></i></NavLink>})
 
                   }
 
@@ -225,98 +252,9 @@ const header = (
                                     <Column field="eliminar" header="Editar" style={{ minWidth: '2rem' }} />
 
                                    
-                                </DataTable>
-{/*
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light align-items-center">
-                  <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Edad</th>
-                    <th scope="col">Genero</th>
-                    <th scope="col">Contacto</th>
-                    <th scope="col">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Monserrat Alejandra Castro</td>
-                    <td>25 años</td>
-                    <td>
-                     
-                        Femenino
-                    </td>
-                    <td>
-                      <div className="avatar-group">
-                        
-                        443555831
-                      </div>
-                    </td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                      <NavLink style={{marginRight:'15px'}} to='/admin/ver-pacientes'>Ver </NavLink>
-                      <NavLink style={{marginRight:'15px'}} to='/admin/ver-pacientes'>Editar </NavLink>
-                      <NavLink style={{marginRight:'15px'}} to='/admin/ver-pacientes'>Eliminar </NavLink>
+              </DataTable>
 
-
-                    </div>
-                    </td>
-                  </tr>
-                 
-                </tbody>
-              </Table>
-              <CardFooter className="py-4">
-                <nav aria-label="...">
-                  <Pagination
-                    className="pagination justify-content-end mb-0"
-                    listClassName="justify-content-end mb-0"
-                  >
-                    <PaginationItem className="disabled">
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                        tabIndex="-1"
-                      >
-                        <i className="fas fa-angle-left" />
-                        <span className="sr-only">Previous</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem className="active">
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        1
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        2 <span className="sr-only">(current)</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        3
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <i className="fas fa-angle-right" />
-                        <span className="sr-only">Next</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                  </Pagination>
-                </nav>
-              </CardFooter>*/}
-            </Card>
+                       </Card>
           </div>
         </Row>
        
