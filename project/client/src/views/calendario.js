@@ -1,45 +1,46 @@
 
-import {
-   
-    
-    Container,
-    
-  
-  } from "reactstrap";
+import {Container,} from "reactstrap";
 
-  import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
 // import timeGridPlugin from "@fullcalendar/timegrid";
 
-import events from "./events";
-import "@fullcalendar/core";
-import "@fullcalendar/daygrid";
-import "@fullcalendar/timegrid";
+//import "./styles.css";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import { useState } from "react";
   // core components
   import Header2 from "components/Headers/Header2.js";
   
   const Calendario = () => {
+    const [events, setEvents] = useState([]);
     return (
       <>
         <Header2/>
         {/* Page content */}
-        <Container classNameName="mt--7" fluid>
-    
-      <FullCalendar
-        defaultView="dayGridMonth"
-        // themeSystem="Simplex"
-        // header={{
-        //   left: "prev,next",
-        //   center: "title",
-        //   right: "dayGridMonth,timeGridWeek,timeGridDay",
-        // }}
-        plugins={[dayGridPlugin]}
-        events={events}
-        displayEventEnd="true"
-        eventColor={"#" + Math.floor(Math.random() * 16777215).toString(16)}
-      />
-
-        </Container>
+        <FullCalendar
+      plugins={[dayGridPlugin, timeGridPlugin]}
+      headerToolbar={{
+        left: "prev,next today myCustomButton",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay"
+      }}
+      events={events}
+      customButtons={{
+        myCustomButton: {
+          text: "Add event",
+          click: () => {
+            setEvents([
+              ...events,
+              {
+                title: "event",
+                date: new Date().toISOString().substr(0, 10)
+              }
+            ]);
+          }
+        }
+      }}
+    />
+        
       </>
     );
   };
